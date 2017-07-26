@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+
+	{% block title %}
+		<h3>Admin Page</h3>
+	{% endblock title %}
+
+
+	{%block home-nav %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	{% endblock home-nav %}
+
+
+	{% block content %}
+		{% for i in members %}{% csrf_token %}
+			{% if i.username != 'admin' %}
+				<ul>
+					<li><a href="{% url 'permission_member' pk=i.pk %}">{{ i.username }}</a></li>
+				</ul>
+			{% endif %}
+		{% endfor %}
+	{% endblock content %}

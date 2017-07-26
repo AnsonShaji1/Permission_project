@@ -1,0 +1,50 @@
+{% extends 'base.html'%}
+
+	{% block home-sub-title %}
+		<a class="navbar-brand" href="#">Users</a>
+	{% endblock home-sub-title %}
+
+
+	{% block user_first_login %}
+		{% if obj.per_create == 'True' or obj.per_create == True %}
+			<li><a href="/project/add">Add Details</a></li>
+		{% endif %}
+	{% endblock user_first_login %}
+
+
+	{%block home-nav %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	{% endblock home-nav %}
+
+
+	{% block title %}
+		<h3>{{ request.user }}</h3>
+	{% endblock title %}
+
+
+	{% block content %}
+
+		{% if obj.per_read == 'True' or obj.per_read == True %}
+
+			{% if post %}
+				{% for i in post %}
+					<blockquote>
+					Title:    {{ i.title }}<br />
+					Description:    {{ i.text }}<br />
+					{% if obj.per_edit == 'True' or obj.per_edit == True %}
+						<a href="{% url 'post_edit' pk=i.pk %}">Edit</a>
+					{% endif %}
+					<p></p>
+					{% if obj.per_delete == 'True' or obj.per_delete == True %}
+						<a href="{% url 'post_delete' pk=i.pk %}">Delete</a>
+					{% endif %}
+					<p></p>
+					</blockquote>
+				{% endfor %}
+			{% endif %}
+
+		{% endif %}
+
+	{% endblock content %}

@@ -1,0 +1,21 @@
+{% extends 'base.html'%}
+
+	{% block title %}
+		<h3>Permission</h3>
+		<h5>Chose your option</h5>
+	{% endblock title %}
+
+
+	{%block home-nav %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	{% endblock home-nav %}
+
+
+	{% block content %}
+		<form action='' method="POST" enctype="multipart/form-data">{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Submit</button>
+		</form>
+	{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+
+	{% block home-sub-title %}
+		<a class="navbar-brand" href="#">{{ request.user }}</a>
+	{% endblock home-sub-title %}
+
+
+	{%block home-nav %}
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout">Logout</a></li>
+		</ul>
+	{% endblock home-nav %}
+
+
+	{% block title %}
+		<h3>New Post</h3>
+	{% endblock title %}
+
+
+	{% block content %}
+		<form method="POST" enctype='multipart/form-data'>{% csrf_token %}
+			{{ form.as_p }}
+			<button type="submit">Save</button>
+		</form>
+	{% endblock content %}
