@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.shortcuts import get_object_or_404
 from .forms import UserRegForm,UserLoginForm,User,PostForm,PermissionForm
 from .models import Post,PermissionAdmin
-
+from django.views.decorators.csrf import csrf_exempt
 
 from django.contrib.auth import(
 		authenticate,
@@ -24,6 +24,7 @@ def member_home(request):
 
 
 def register_view(request):
+	#import pdb;pdb.set_trace()
 	title = 'Register'
 	form = UserRegForm(request.POST or None)
 
@@ -32,12 +33,14 @@ def register_view(request):
 		password = form.cleaned_data.get('password')
 		user.set_password(password)
 		user.save()
-		return redirect('/users')
+		PermissionAdmin.objects.create(author=user.username,per_read=True,per_edit=True,per_delete=True,per_create=True)
+		#return redirect('/users')
+		return redirect('/login/')
 	return render(request, 'register.html', {'form': form, 'title': title})
 
 
 def login_view(request):
-	title = "Login"
+	title = "User Login"
 	form = UserLoginForm(request.POST or None)
 
 	if form.is_valid():
@@ -64,8 +67,9 @@ def logout_view(request):
 	logout(request)
 	return render(request, 'logout.html', {})
 
-
+@csrf_exempt
 def admin_login(request):
+	#import pdb;pdb.set_trace()
 	title = "Admin Login"
 	form = UserLoginForm(request.POST or None)
 
@@ -79,7 +83,7 @@ def admin_login(request):
 			return render(request, 'admin_page.html', {'members': User.objects.all()})
 		else:
 			redirect('/controller/login/')
-	return render(request,'login.html',{'form': form,'title': title})
+	return render(request,'admin_login.html',{'form': form,'title': title})
 
 
 def post_new(request):
@@ -88,7 +92,7 @@ def post_new(request):
 
 		if form.is_valid():
 			post = form.save(commit=False)
-			print type(request.user)
+			#print type(request.user)
 			post.author = request.user
 			post.save()
 			return redirect('/first_page')
@@ -120,6 +124,7 @@ def post_delete(request, pk):
 
 
 def permission_member(request, pk):
+	#import pdb;pdb.set_trace()
 	post = get_object_or_404(User, pk=pk)
 	object1 = get_object_or_404(PermissionAdmin, author=post.username)
 
