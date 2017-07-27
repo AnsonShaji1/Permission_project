@@ -32,6 +32,7 @@ def register_view(request):
 		user = form.save(commit=False)
 		username = form.cleaned_data.get("username")
 		password = form.cleaned_data.get('password')
+<<<<<<< HEAD
 		
 		if username != 'admin':
 			user.set_password(password)
@@ -41,6 +42,13 @@ def register_view(request):
 			return redirect('/login/')
 		else:
 			pass
+=======
+		user.set_password(password)
+		user.save()
+		PermissionAdmin.objects.create(author=user.username,per_read=True,per_edit=True,per_delete=True,per_create=True)
+		#return redirect('/users')
+		return redirect('/login/')
+>>>>>>> 70092ba61387986eecc0d854c0b30f97377a3cd2
 	return render(request, 'register.html', {'form': form, 'title': title})
 
 
